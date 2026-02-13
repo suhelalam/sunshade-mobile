@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "sunshade-mobile",
+    "name": "Sunshade",
     "slug": "sunshade-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,8 +8,14 @@
     "scheme": "sunshademobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sunshade.mobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +25,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.sunshade.mobile"
     },
     "web": {
       "output": "static",
