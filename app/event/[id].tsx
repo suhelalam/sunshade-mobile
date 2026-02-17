@@ -8,12 +8,13 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { eventService } from "@/services/api";
+import { firebaseEventService } from "@/services/firestore";
 import { Event } from "@/types/events";
 
 export default function EventDetailScreen() {
@@ -21,6 +22,7 @@ export default function EventDetailScreen() {
   const { id } = useLocalSearchParams();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
+  const insets = useSafeAreaInsets();
 
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,7 @@ export default function EventDetailScreen() {
       setLoading(true);
       setError(null);
       if (typeof id === "string") {
-        const fetchedEvent = await eventService.getEventById(id);
+        const fetchedEvent = await firebaseEventService.getEventById(id);
         setEvent(fetchedEvent);
       }
     } catch (err) {
@@ -79,7 +81,15 @@ export default function EventDetailScreen() {
       <ThemedView
         style={[styles.container, { backgroundColor: colors.background }]}
       >
-        <View style={styles.header}>
+        <View
+          style={[
+            styles.header,
+            {
+              paddingTop: Math.max(insets.top, 12),
+              borderBottomColor: colors.border,
+            },
+          ]}
+        >
           <TouchableOpacity onPress={() => router.back()}>
             <ThemedText style={{ color: colors.tint, fontSize: 16 }}>
               ← Back
@@ -111,7 +121,15 @@ export default function EventDetailScreen() {
     <ThemedView
       style={[styles.container, { backgroundColor: colors.background }]}
     >
-      <View style={styles.header}>
+      <View
+        style={[
+          styles.header,
+          {
+            paddingTop: Math.max(insets.top, 12),
+            borderBottomColor: colors.border,
+          },
+        ]}
+      >
         <TouchableOpacity onPress={() => router.back()}>
           <ThemedText
             style={{ color: colors.tint, fontSize: 16, fontWeight: "600" }}
@@ -298,10 +316,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop: 16,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
   },
   centerContent: {
     flex: 1,
